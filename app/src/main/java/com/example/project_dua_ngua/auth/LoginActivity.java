@@ -11,7 +11,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.project_dua_ngua.R;
-import com.example.project_dua_ngua.game.GameActivity;
+import com.example.project_dua_ngua.game.GameActivity1;
 import com.example.project_dua_ngua.sound.MusicManager;
 
 public class LoginActivity extends AppCompatActivity {
@@ -49,7 +49,7 @@ public class LoginActivity extends AppCompatActivity {
                     // Stop the music when logging in to the main app
                     MusicManager.getInstance().stop();
 
-                    Intent intent = new Intent(LoginActivity.this, GameActivity.class);
+                    Intent intent = new Intent(LoginActivity.this, GameActivity1.class);
                     startActivity(intent);
                     finish();
                 } else {
