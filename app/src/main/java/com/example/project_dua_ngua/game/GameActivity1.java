@@ -16,9 +16,7 @@ public class GameActivity1 extends AppCompatActivity {
         setContentView(R.layout.activity_game);
 
         Button playGameButton = findViewById(R.id.playGameButton);
-
         playGameButton.setOnClickListener(v -> {
-            // Start RaceActivity when the button is clicked
             Intent intent = new Intent(GameActivity1.this, RaceActivity.class);
             startActivity(intent);
         });
