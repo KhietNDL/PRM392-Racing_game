@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.example.project_dua_ngua.R;
-import com.example.project_dua_ngua.game.MainActivity;
+import com.example.project_dua_ngua.game.RaceActivity;
 import com.example.project_dua_ngua.sound.MusicManager;
 
 public class BetResultActivity extends AppCompatActivity {
@@ -21,7 +21,6 @@ public class BetResultActivity extends AppCompatActivity {
 	private TextView tvMoneyChange;
 	private TextView tvMoneyAfter;
 	private ImageView ivResultIcon;
-	private Button btnHome;
 	private Button btnPlayAgain;
 
 	private int winnerId;
@@ -61,11 +60,10 @@ public class BetResultActivity extends AppCompatActivity {
 
 	private void initViews() {
 		tvResultTitle = findViewById(R.id.tvResultTitle);
-		tvMoneyBefore = findViewById(R.id.tvMoneyBefore);
-		tvMoneyChange = findViewById(R.id.tvMoneyChange);
+	tvMoneyBefore = findViewById(R.id.tvMoneyBefore);
+	tvMoneyChange = findViewById(R.id.tvMoneyChange);
 		tvMoneyAfter = findViewById(R.id.tvMoneyAfter);
 		ivResultIcon = findViewById(R.id.ivResultIcon);
-		btnHome = findViewById(R.id.btnHome);
 		btnPlayAgain = findViewById(R.id.btnPlayAgain);
 	}
 
@@ -124,25 +122,14 @@ public class BetResultActivity extends AppCompatActivity {
 	}
 
 	private void setupButtons() {
-		// Home button - go to MainActivity
-		btnHome.setOnClickListener(v -> {
-			// Stop congratulation BGM before going home
-			MusicManager.getInstance().stopBgm();
 
-			Intent intent = new Intent(BetResultActivity.this, MainActivity.class);
-			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-			startActivity(intent);
-			finish();
-		});
-
-		// Play Again button - go back to betting/game screen
+		// Play Again button - go back to RaceActivity
 		btnPlayAgain.setOnClickListener(v -> {
 			// Stop congratulation BGM
 			MusicManager.getInstance().stopBgm();
 
-			// Go to betting screen or game screen
-			// Assuming there's a BettingActivity or go back to MainActivity
-			Intent intent = new Intent(BetResultActivity.this, MainActivity.class);
+			// Go back to RaceActivity with updated money
+			Intent intent = new Intent(BetResultActivity.this, RaceActivity.class);
 			intent.putExtra("currentMoney", moneyAfter); // Pass updated money
 			startActivity(intent);
 			finish();

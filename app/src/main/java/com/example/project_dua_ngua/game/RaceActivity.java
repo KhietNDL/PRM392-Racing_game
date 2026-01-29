@@ -1,5 +1,6 @@
 package com.example.project_dua_ngua.game;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -17,6 +18,8 @@ import com.example.project_dua_ngua.bet.Bet;
 import com.example.project_dua_ngua.bet.BetManager;
 import com.example.project_dua_ngua.bet.BetResult;
 import com.example.project_dua_ngua.bet.Player;
+import com.example.project_dua_ngua.ui.WinnerActivity;
+import com.example.project_dua_ngua.sound.MusicManager;
 
 import java.util.List;
 import java.util.Random;
@@ -45,6 +48,11 @@ public class RaceActivity extends AppCompatActivity {
     private final BetManager betManager = new BetManager();
     private Player player;
 
+    // Variables to track bet information for WinnerActivity
+    private int moneyBeforeRace;
+    private int totalBetAmount;
+    private int betOnHorseId = -1; // -1 means bet on multiple horses
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,7 +69,9 @@ public class RaceActivity extends AppCompatActivity {
         startButton = findViewById(R.id.startButton);
         resetButton = findViewById(R.id.resetButton);
 
-        player = new Player(STARTING_MONEY);
+        // Check if money is passed from previous race
+        int currentMoney = getIntent().getIntExtra("currentMoney", STARTING_MONEY);
+        player = new Player(currentMoney);
         updateMoneyText();
 
         startButton.setOnClickListener(v -> startRace());
@@ -87,10 +97,26 @@ public class RaceActivity extends AppCompatActivity {
             return;
         }
 
+        // Save money before race and bet info
+        moneyBeforeRace = player.getMoney();
+        totalBetAmount = totalBet;
+
+        // Determine which horse was bet on
+        if (betHorse1 > 0 && betHorse2 == 0) {
+            betOnHorseId = 0; // Bet on Horse 1 only
+        } else if (betHorse2 > 0 && betHorse1 == 0) {
+            betOnHorseId = 1; // Bet on Horse 2 only
+        } else {
+            betOnHorseId = -1; // Bet on both horses
+        }
+
         player.placeBets(bets, totalBet);
         updateMoneyText();
         setBetInputsEnabled(false);
         resetHorsePositions();
+
+        // Play racing music
+        MusicManager.getInstance().startBgm(this, R.raw.race_sound);
 
         isRacing = true;
         winnerDeclared = false;
@@ -131,17 +157,39 @@ public class RaceActivity extends AppCompatActivity {
     private void endRace(int winnerIndex) {
         isRacing = false;
         handler.removeCallbacks(raceRunnable);
-        startButton.setEnabled(true);
-        resetButton.setEnabled(true);
-        setBetInputsEnabled(true);
 
+        // Stop racing music
+        MusicManager.getInstance().stopBgm();
+
+        // Calculate payout and update money
         BetResult result = betManager.resolveBets(player, winnerIndex, PAYOUT_MULTIPLIER);
-        updateMoneyText();
+        int moneyAfterRace = player.getMoney();
 
+        // Prepare winner data
         String winnerName = winnerIndex == 0 ? "Horse 1" : "Horse 2";
-        textStatus.setText("Winner: " + winnerName + " | Net: " + result.getNetChange());
-        Toast.makeText(this, winnerName + " wins!", Toast.LENGTH_SHORT).show();
-        clearBetInputs();
+        int winnerImageRes = R.drawable.ic_horse; // Use horse drawable
+
+        // Determine the main bet horse ID for result display
+        int mainBetHorseId;
+        if (betOnHorseId != -1) {
+            mainBetHorseId = betOnHorseId + 1; // Convert to 1-based (Horse 1 = 1, Horse 2 = 2)
+        } else {
+            // If bet on multiple, use the winner as main bet for display
+            mainBetHorseId = winnerIndex + 1;
+        }
+
+        // Navigate to WinnerActivity immediately after race ends
+        Intent intent = new Intent(RaceActivity.this, WinnerActivity.class);
+        intent.putExtra("winnerId", winnerIndex + 1); // Horse 1 = id 1, Horse 2 = id 2
+        intent.putExtra("winnerName", winnerName);
+        intent.putExtra("winnerImageRes", winnerImageRes);
+        intent.putExtra("moneyBefore", moneyBeforeRace);
+        intent.putExtra("moneyAfter", moneyAfterRace);
+        intent.putExtra("betAmount", totalBetAmount);
+        intent.putExtra("betOnId", mainBetHorseId);
+
+        startActivity(intent);
+        finish(); // Close RaceActivity so user can't go back with back button
     }
 
     private void resetRace() {

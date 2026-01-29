@@ -40,8 +40,20 @@ public class WinnerActivity extends AppCompatActivity {
 		// Display winner info
 		displayWinner();
 
-		// Play congratulation BGM
-		MusicManager.getInstance().startBgm(this, R.raw.congratulation_bgm);
+		// Play win or lose sound based on result
+		int moneyBefore = getIntent().getIntExtra("moneyBefore", 1000);
+		int moneyAfter = getIntent().getIntExtra("moneyAfter", 1000);
+		int betOnId = getIntent().getIntExtra("betOnId", -1);
+
+		// Determine if player won
+		boolean isWin = (betOnId == winnerId);
+
+		// Play appropriate sound
+		if (isWin) {
+			MusicManager.getInstance().startBgm(this, R.raw.win_sound);
+		} else {
+			MusicManager.getInstance().startBgm(this, R.raw.lose_sound);
+		}
 
 		// Start entrance animation
 		startAnimation();
@@ -103,24 +115,23 @@ public class WinnerActivity extends AppCompatActivity {
 
 	private void setupButtons() {
 		btnNext.setOnClickListener(v -> {
-			// Pass data to BetResultActivity
-			Intent intent = new Intent(WinnerActivity.this, BetResultActivity.class);
-			intent.putExtra("winnerId", winnerId);
-			intent.putExtra("winnerName", winnerName);
-
-			// Get money and bet data from previous intent
+			// Get money and bet data from intent
 			int moneyBefore = getIntent().getIntExtra("moneyBefore", 1000);
 			int moneyAfter = getIntent().getIntExtra("moneyAfter", 1000);
 			int betAmount = getIntent().getIntExtra("betAmount", 0);
 			int betOnId = getIntent().getIntExtra("betOnId", -1);
 
+			// Navigate to BetResultActivity
+			Intent intent = new Intent(WinnerActivity.this, BetResultActivity.class);
+			intent.putExtra("winnerId", winnerId);
+			intent.putExtra("winnerName", winnerName);
 			intent.putExtra("moneyBefore", moneyBefore);
 			intent.putExtra("moneyAfter", moneyAfter);
 			intent.putExtra("betAmount", betAmount);
 			intent.putExtra("betOnId", betOnId);
 
 			startActivity(intent);
-			finish(); // Can't go back to winner screen
+			finish();
 		});
 	}
 
@@ -139,6 +150,6 @@ public class WinnerActivity extends AppCompatActivity {
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		// Don't stop BGM here, it will continue to BetResultActivity
+		// Don't stop BGM here, it will continue to next screen
 	}
 }

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_dark"
+    android:background="@drawable/login_background"
     android:padding="20dp"
     tools:context=".ui.BetResultActivity">
 
@@ -43,7 +43,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="30dp"
         android:layout_marginEnd="20dp"
         app:cardBackgroundColor="#2A2A2A"
         app:cardCornerRadius="15dp"
@@ -57,34 +57,34 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="vertical"
-            android:padding="30dp">
+            android:padding="20dp">
 
             <!-- Money Before -->
             <TextView
                 android:id="@+id/tvMoneyBefore"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="15dp"
+                android:layout_marginBottom="10dp"
                 android:text="Previous: $1000"
                 android:textColor="@color/white"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <!-- Money Change (+ or -) -->
             <TextView
                 android:id="@+id/tvMoneyChange"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="15dp"
+                android:layout_marginBottom="10dp"
                 android:text="+500"
                 android:textColor="@color/win_green"
-                android:textSize="48sp"
+                android:textSize="36sp"
                 android:textStyle="bold" />
 
             <!-- Divider -->
             <View
                 android:layout_width="150dp"
                 android:layout_height="2dp"
-                android:layout_marginBottom="15dp"
+                android:layout_marginBottom="10dp"
                 android:background="@color/gold" />
 
             <!-- Money After -->
@@ -94,7 +94,7 @@
                 android:layout_height="wrap_content"
                 android:text="Current: $1500"
                 android:textColor="@color/win_green"
-                android:textSize="24sp"
+                android:textSize="22sp"
                 android:textStyle="bold" />
 
         </LinearLayout>
@@ -107,38 +107,28 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="25dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginBottom="40dp"
+        android:layout_marginBottom="30dp"
         android:gravity="center"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cardBetResult">
+        app:layout_constraintTop_toBottomOf="@id/cardBetResult"
+        app:layout_constraintVertical_bias="0.0">
 
         <!-- Play Again Button -->
         <Button
             android:id="@+id/btnPlayAgain"
             android:layout_width="250dp"
             android:layout_height="60dp"
-            android:layout_marginBottom="15dp"
             android:backgroundTint="@color/win_green"
             android:text="Play Again"
             android:textColor="@color/white"
             android:textSize="18sp"
             android:textStyle="bold" />
 
-        <!-- Home Button -->
-        <Button
-            android:id="@+id/btnHome"
-            android:layout_width="250dp"
-            android:layout_height="60dp"
-            android:backgroundTint="@color/gold"
-            android:text="Home"
-            android:textColor="@color/black"
-            android:textSize="18sp"
-            android:textStyle="bold" />
 
     </LinearLayout>
 
