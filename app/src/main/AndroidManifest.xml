@@ -29,6 +29,18 @@
         <activity
             android:name=".game.GameActivity"
             android:exported="false" />
+        <activity
+            android:name=".game.GameActivity1"
+            android:exported="false" />
+        <activity
+            android:name=".game.RaceActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.WinnerActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.BetResultActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

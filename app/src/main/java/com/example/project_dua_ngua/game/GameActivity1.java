@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.project_dua_ngua.R;
 
-public class GameActivity extends AppCompatActivity {
+public class GameActivity1 extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,7 +17,7 @@ public class GameActivity extends AppCompatActivity {
 
         Button playGameButton = findViewById(R.id.playGameButton);
         playGameButton.setOnClickListener(v -> {
-            Intent intent = new Intent(GameActivity.this, RaceActivity.class);
+            Intent intent = new Intent(GameActivity1.this, RaceActivity.class);
             startActivity(intent);
         });
     }
