@@ -13,6 +13,8 @@ import androidx.core.content.ContextCompat;
 import com.example.project_dua_ngua.R;
 import com.example.project_dua_ngua.game.RaceActivity;
 import com.example.project_dua_ngua.sound.MusicManager;
+import com.example.project_dua_ngua.statistic.GameData;
+import com.example.project_dua_ngua.statistic.StatisticActivity;
 
 public class BetResultActivity extends AppCompatActivity {
 
@@ -22,6 +24,7 @@ public class BetResultActivity extends AppCompatActivity {
 	private TextView tvMoneyAfter;
 	private ImageView ivResultIcon;
 	private Button btnPlayAgain;
+	private Button btnViewStats;
 
 	private int winnerId;
 	private int betOnId;
@@ -43,6 +46,9 @@ public class BetResultActivity extends AppCompatActivity {
 		// Calculate win/loss
 		calculateResult();
 
+		// Save statistics
+		GameData.getInstance(this).recordRace(isWin, moneyAfter);
+
 		// Display result
 		displayResult();
 
@@ -60,11 +66,12 @@ public class BetResultActivity extends AppCompatActivity {
 
 	private void initViews() {
 		tvResultTitle = findViewById(R.id.tvResultTitle);
-	tvMoneyBefore = findViewById(R.id.tvMoneyBefore);
-	tvMoneyChange = findViewById(R.id.tvMoneyChange);
+		tvMoneyBefore = findViewById(R.id.tvMoneyBefore);
+		tvMoneyChange = findViewById(R.id.tvMoneyChange);
 		tvMoneyAfter = findViewById(R.id.tvMoneyAfter);
 		ivResultIcon = findViewById(R.id.ivResultIcon);
 		btnPlayAgain = findViewById(R.id.btnPlayAgain);
+		btnViewStats = findViewById(R.id.btnViewStats);
 	}
 
 	private void getIntentData() {
@@ -133,6 +140,11 @@ public class BetResultActivity extends AppCompatActivity {
 			intent.putExtra("currentMoney", moneyAfter); // Pass updated money
 			startActivity(intent);
 			finish();
+		});
+
+		btnViewStats.setOnClickListener(v -> {
+			Intent intent = new Intent(BetResultActivity.this, StatisticActivity.class);
+			startActivity(intent);
 		});
 	}
 

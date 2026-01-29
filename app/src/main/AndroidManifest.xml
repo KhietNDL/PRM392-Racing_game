@@ -41,6 +41,9 @@
         <activity
             android:name=".ui.BetResultActivity"
             android:exported="false" />
+        <activity
+            android:name=".statistic.StatisticActivity"
+            android:exported="false" />
     </application>
 
 </manifest>
