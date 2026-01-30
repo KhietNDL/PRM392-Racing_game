@@ -27,10 +27,12 @@ import java.util.Random;
 public class RaceActivity extends AppCompatActivity {
 
     private static final int STARTING_MONEY = 1000;
-    private static final int PAYOUT_MULTIPLIER = 2;
+    private static final double PAYOUT_MULTIPLIER = 1.5;
 
     private TextView textMoney;
     private TextView textStatus;
+    private EditText editTopUpAmount;
+    private Button buttonTopUp;
     private EditText editBetHorse1;
     private EditText editBetHorse2;
     private EditText editBetHorse3;
@@ -63,6 +65,8 @@ public class RaceActivity extends AppCompatActivity {
 
         textMoney = findViewById(R.id.textMoney);
         textStatus = findViewById(R.id.textStatus);
+        editTopUpAmount = findViewById(R.id.editTopUpAmount);
+        buttonTopUp = findViewById(R.id.buttonTopUp);
         editBetHorse1 = findViewById(R.id.editBetHorse1);
         editBetHorse2 = findViewById(R.id.editBetHorse2);
         editBetHorse3 = findViewById(R.id.editBetHorse3);
@@ -80,6 +84,7 @@ public class RaceActivity extends AppCompatActivity {
         player = new Player(currentMoney);
         updateMoneyText();
 
+        buttonTopUp.setOnClickListener(v -> topUpMoney());
         startButton.setOnClickListener(v -> startRace());
         resetButton.setOnClickListener(v -> resetRace());
     }
@@ -132,6 +137,7 @@ public class RaceActivity extends AppCompatActivity {
         winnerDeclared = false;
         startButton.setEnabled(false);
         resetButton.setEnabled(false);
+        setTopUpEnabled(false);
         textStatus.setText("Race started...");
 
         raceRunnable = new Runnable() {
@@ -174,6 +180,10 @@ public class RaceActivity extends AppCompatActivity {
     private void endRace(int winnerIndex) {
         isRacing = false;
         handler.removeCallbacks(raceRunnable);
+        startButton.setEnabled(true);
+        resetButton.setEnabled(true);
+        setTopUpEnabled(true);
+        setBetInputsEnabled(true);
 
         // Stop racing music
         MusicManager.getInstance().stopBgm();
@@ -184,15 +194,17 @@ public class RaceActivity extends AppCompatActivity {
 
         // Prepare winner data
         String winnerName;
+        int winnerImageRes;
         if (winnerIndex == 0) {
             winnerName = "Horse 1";
+            winnerImageRes = R.drawable.horse_running1;
         } else if (winnerIndex == 1) {
             winnerName = "Horse 2";
+            winnerImageRes = R.drawable.horse_running2;
         } else {
             winnerName = "Horse 3";
+            winnerImageRes = R.drawable.horse_running3;
         }
-
-        int winnerImageRes = R.drawable.ic_horse; // Use horse drawable
 
         // Determine the main bet horse ID for result display
         int mainBetHorseId;
@@ -231,6 +243,23 @@ public class RaceActivity extends AppCompatActivity {
         textStatus.setText("");
         startButton.setEnabled(true);
         resetButton.setEnabled(true);
+        setTopUpEnabled(true);
+    }
+
+    private void topUpMoney() {
+        if (isRacing) {
+            Toast.makeText(this, "Please wait for the race to finish", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        int amount = parseAmount(editTopUpAmount);
+        if (amount <= 0) {
+            Toast.makeText(this, "Please enter a valid top up amount", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        player.addMoney(amount);
+        updateMoneyText();
+        editTopUpAmount.setText("");
+        Toast.makeText(this, "Added " + amount, Toast.LENGTH_SHORT).show();
     }
 
     private void updateMoneyText() {
@@ -254,6 +283,11 @@ public class RaceActivity extends AppCompatActivity {
         editBetHorse1.setText("");
         editBetHorse2.setText("");
         editBetHorse3.setText("");
+    }
+
+    private void setTopUpEnabled(boolean enabled) {
+        editTopUpAmount.setEnabled(enabled);
+        buttonTopUp.setEnabled(enabled);
     }
 
     private void setBetInputsEnabled(boolean enabled) {

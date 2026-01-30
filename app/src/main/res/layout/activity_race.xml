@@ -27,6 +27,30 @@
         android:text=""
         android:textSize="14sp" />
 
+    <LinearLayout
+        android:id="@+id/topUpContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/editTopUpAmount"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:digits="0123456789"
+            android:hint="Top up amount"
+            android:inputType="number" />
+
+        <Button
+            android:id="@+id/buttonTopUp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="Top up" />
+    </LinearLayout>
+
     <TextView
         android:id="@+id/textBetting"
         android:layout_width="match_parent"
@@ -52,6 +76,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:digits="0123456789"
             android:hint="Bet"
             android:inputType="number" />
     </LinearLayout>
@@ -73,6 +98,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:digits="0123456789"
             android:hint="Bet"
             android:inputType="number" />
     </LinearLayout>
