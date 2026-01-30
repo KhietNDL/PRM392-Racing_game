@@ -34,7 +34,6 @@ public class BetManager {
         }
         int payout = (int) Math.round(winningAmount * payoutMultiplier);
         player.addMoney(payout);
-        player.recordRace(winningAmount > 0);
         player.clearBets();
         return new BetResult(winnerIndex, totalBet, payout);
     }

@@ -20,13 +20,5 @@
         android:textSize="24sp"
         android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/textNotice"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:gravity="center"
-        android:text="Betting module ready.\nWaiting for game logic integration."
-        android:textColor="#B0BEC5"
-        android:textSize="14sp" />
+
 </LinearLayout>

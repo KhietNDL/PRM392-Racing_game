@@ -6,9 +6,6 @@ import java.util.List;
 
 public class Player {
     private int money;
-    private int totalRaces;
-    private int totalWins;
-    private int totalLosses;
     private int totalBetAmount;
     private int totalPayout;
     private final List<Bet> bets = new ArrayList<>();
@@ -19,18 +16,6 @@ public class Player {
 
     public int getMoney() {
         return money;
-    }
-
-    public int getTotalRaces() {
-        return totalRaces;
-    }
-
-    public int getTotalWins() {
-        return totalWins;
-    }
-
-    public int getTotalLosses() {
-        return totalLosses;
     }
 
     public int getTotalBetAmount() {
@@ -63,14 +48,5 @@ public class Player {
     public void addMoney(int amount) {
         money += amount;
         totalPayout += amount;
-    }
-
-    public void recordRace(boolean won) {
-        totalRaces += 1;
-        if (won) {
-            totalWins += 1;
-        } else {
-            totalLosses += 1;
-        }
     }
 }
