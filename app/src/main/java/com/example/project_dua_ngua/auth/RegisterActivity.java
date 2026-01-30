@@ -41,6 +41,8 @@ public class RegisterActivity extends AppCompatActivity {
 					// In a real app, you would save the new user here.
 					Toast.makeText(RegisterActivity.this, "Registration successful!", Toast.LENGTH_SHORT).show();
 					Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+					intent.putExtra("username", username);
+					intent.putExtra("password", password);
 					startActivity(intent);
 					finish();
 				} else {

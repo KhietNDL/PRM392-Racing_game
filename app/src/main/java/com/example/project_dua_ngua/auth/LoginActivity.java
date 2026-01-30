@@ -20,8 +20,8 @@ public class LoginActivity extends AppCompatActivity {
     private TextView textViewRegister;
 
     // Hardcoded credentials
-    private final String HARDCODED_USERNAME = "admin";
-    private final String HARDCODED_PASSWORD = "admin";
+    private String registeredUsername;
+    private String registeredPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,13 +33,20 @@ public class LoginActivity extends AppCompatActivity {
         buttonLogin = findViewById(R.id.buttonLogin);
         textViewRegister = findViewById(R.id.textViewRegister);
 
+        // Get registered user data from Intent
+        Intent intent = getIntent();
+        if (intent != null && intent.hasExtra("username") && intent.hasExtra("password")) {
+            registeredUsername = intent.getStringExtra("username");
+            registeredPassword = intent.getStringExtra("password");
+        }
+
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String username = editTextUsername.getText().toString();
                 String password = editTextPassword.getText().toString();
 
-                if (username.equals(HARDCODED_USERNAME) && password.equals(HARDCODED_PASSWORD)) {
+                if (("admin".equals(username) && "admin".equals(password)) || (username.equals(registeredUsername) && password.equals(registeredPassword))) {
                     Toast.makeText(LoginActivity.this, "Login successful!", Toast.LENGTH_SHORT).show();
 
                     Intent intent = new Intent(LoginActivity.this, RaceActivity.class);
