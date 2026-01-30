@@ -132,8 +132,8 @@ public class BetResultActivity extends AppCompatActivity {
 
 		// Play Again button - go back to RaceActivity
 		btnPlayAgain.setOnClickListener(v -> {
-			// Stop congratulation BGM
-			MusicManager.getInstance().stopBgm();
+			// Restore the main background music
+			MusicManager.getInstance().restoreMainBgm(this);
 
 			// Go back to RaceActivity with updated money
 			Intent intent = new Intent(BetResultActivity.this, RaceActivity.class);
@@ -146,23 +146,5 @@ public class BetResultActivity extends AppCompatActivity {
 			Intent intent = new Intent(BetResultActivity.this, StatisticActivity.class);
 			startActivity(intent);
 		});
-	}
-
-	@Override
-	protected void onPause() {
-		super.onPause();
-		// Don't pause BGM here, let it continue playing
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-		// BGM should still be playing from WinnerActivity
-	}
-
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		// BGM will be stopped when user clicks home or play again
 	}
 }

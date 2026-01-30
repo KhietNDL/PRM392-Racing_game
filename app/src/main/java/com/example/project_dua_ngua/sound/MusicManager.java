@@ -10,10 +10,11 @@ public class MusicManager {
 	private MediaPlayer bgmPlayer;
 	private SoundPool soundPool;
 	private int currentBgmId = -1;
+    private int mainBgmId = -1; // To keep track of the main background music
+    private boolean isBgmPaused = false; // To track if BGM was paused by an effect
 
 	private MusicManager() {
 		// Private constructor for singleton
-		// Initialize SoundPool for sound effects
 		AudioAttributes audioAttributes = new AudioAttributes.Builder()
 				.setUsage(AudioAttributes.USAGE_GAME)
 				.setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
@@ -31,36 +32,46 @@ public class MusicManager {
 		return instance;
 	}
 
-	/**
-	 * Start background music (looped)
-	 */
 	public void startBgm(Context context, int musicId) {
-		// If same music is already playing, do nothing
+        // By default, consider it a main BGM if no main BGM is set
+        startBgm(context, musicId, mainBgmId == -1);
+    }
+
+	public void startBgm(Context context, int musicId, boolean isMainBgm) {
 		if (currentBgmId == musicId && bgmPlayer != null && bgmPlayer.isPlaying()) {
 			return;
 		}
 
-		// Stop previous BGM if exists
 		stopBgm();
 
-		// Create and start new BGM
 		bgmPlayer = MediaPlayer.create(context.getApplicationContext(), musicId);
 		if (bgmPlayer != null) {
-			bgmPlayer.setLooping(true);
+			bgmPlayer.setLooping(true); // Ensure all background music loops
 			bgmPlayer.start();
 			currentBgmId = musicId;
+            if (isMainBgm) {
+                mainBgmId = musicId;
+            }
 		}
 	}
 
-	/**
-	 * Play a short sound effect (non-looped)
-	 */
 	public void playEffect(Context context, int soundId) {
 		if (soundPool != null) {
+            if (bgmPlayer != null && bgmPlayer.isPlaying()) {
+                pauseBgm();
+                isBgmPaused = true; // Mark that BGM was paused for an effect
+            }
+
 			int loadedSoundId = soundPool.load(context, soundId, 1);
 			soundPool.setOnLoadCompleteListener((soundPool, sampleId, status) -> {
 				if (status == 0) { // Success
 					soundPool.play(sampleId, 1.0f, 1.0f, 1, 0, 1.0f);
+                    soundPool.setOnLoadCompleteListener(null); // Avoid multiple triggers
+
+                    // This is tricky. We don't know when the sound effect ends.
+                    // A better approach would be to manage this from the calling Activity
+                    // if precise resume timing is needed. For now, we don't auto-resume
+                    // to avoid cutting off the sound effect.
 				}
 			});
 		}
@@ -73,8 +84,10 @@ public class MusicManager {
 	}
 
 	public void resumeBgm() {
+        // Resume only if it was paused and not manually stopped
 		if (bgmPlayer != null && !bgmPlayer.isPlaying()) {
 			bgmPlayer.start();
+            isBgmPaused = false;
 		}
 	}
 
@@ -94,10 +107,16 @@ public class MusicManager {
 		}
 	}
 
-	// Legacy method for backward compatibility
+    // Restore the main BGM, for example after a temporary BGM (like win/lose) has finished.
+    public void restoreMainBgm(Context context) {
+        if (mainBgmId != -1) {
+            startBgm(context, mainBgmId, true);
+        }
+    }
+
 	@Deprecated
 	public void start(Context context, int musicId) {
-		startBgm(context, musicId);
+		startBgm(context, musicId, false);
 	}
 
 	@Deprecated
