@@ -6,4 +6,9 @@
     <color name="lose_red">#F44336</color>
     <color name="bg_dark">#1E1E1E</color>
     <color name="gold">#FFD700</color>
+
+    <!-- Horse Colors -->
+    <color name="horse1_color">#8BC34A</color> <!-- Light Green for Gold Ship -->
+    <color name="horse2_color">#F44336</color> <!-- Red for Maruzensky -->
+    <color name="horse3_color">#00008B</color> <!-- Dark Blue for Oguri Cap -->
 </resources>

@@ -13,6 +13,7 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.project_dua_ngua.R;
+import com.example.project_dua_ngua.auth.LoginActivity;
 import com.example.project_dua_ngua.sound.MusicManager;
 
 public class WinnerActivity extends AppCompatActivity {
@@ -21,6 +22,7 @@ public class WinnerActivity extends AppCompatActivity {
 	private ImageView ivWinnerImage;
 	private TextView tvWinnerTitle;
 	private Button btnNext;
+	private Button btnBackToLogin;
 
 	private int winnerId;
 	private String winnerName;
@@ -31,41 +33,22 @@ public class WinnerActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_winner);
 
-		// Initialize views
 		initViews();
-
-		// Get data from intent
 		getIntentData();
-
-		// Display winner info
 		displayWinner();
 
-		// Play win or lose sound based on result
-		int moneyBefore = getIntent().getIntExtra("moneyBefore", 1000);
-		int moneyAfter = getIntent().getIntExtra("moneyAfter", 1000);
 		int betOnId = getIntent().getIntExtra("betOnId", -1);
-
-		// Determine if player won
 		boolean isWin = (betOnId == winnerId);
 
-		// Play appropriate sound
-		if (isWin) {
-			MusicManager.getInstance().startBgm(this, R.raw.win_sound);
-		} else {
-			MusicManager.getInstance().startBgm(this, R.raw.lose_sound);
-		}
+		MusicManager.getInstance().startBgm(this, isWin ? R.raw.win_sound : R.raw.lose_sound, false);
 
-		// Start entrance animation
 		startAnimation();
-
-		// Setup button click
 		setupButtons();
 
-		// Disable back button using OnBackPressedDispatcher
 		getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
 			@Override
 			public void handleOnBackPressed() {
-				// Do nothing - user must click Next button
+				// Do nothing
 			}
 		});
 	}
@@ -75,6 +58,7 @@ public class WinnerActivity extends AppCompatActivity {
 		ivWinnerImage = findViewById(R.id.ivWinnerImage);
 		tvWinnerTitle = findViewById(R.id.tvWinnerTitle);
 		btnNext = findViewById(R.id.btnNext);
+		btnBackToLogin = findViewById(R.id.btnBackToLogin);
 	}
 
 	private void getIntentData() {
@@ -84,7 +68,19 @@ public class WinnerActivity extends AppCompatActivity {
 		winnerImageRes = intent.getIntExtra("winnerImageRes", R.drawable.ic_launcher_foreground);
 
 		if (winnerName == null) {
-			winnerName = "Horse " + winnerId;
+		    switch(winnerId) {
+		        case 1:
+		            winnerName = "Gold Ship";
+		            break;
+		        case 2:
+		            winnerName = "Maruzensky";
+		            break;
+		        case 3:
+		            winnerName = "Oguri Cap";
+		            break;
+		        default:
+		            winnerName = "Horse " + winnerId;
+		    }
 		}
 	}
 
@@ -95,16 +91,10 @@ public class WinnerActivity extends AppCompatActivity {
 	}
 
 	private void startAnimation() {
-		// Scale animation for winner image
-		ScaleAnimation scaleAnimation = new ScaleAnimation(
-				0.0f, 1.0f, 0.0f, 1.0f,
-				Animation.RELATIVE_TO_SELF, 0.5f,
-				Animation.RELATIVE_TO_SELF, 0.5f
-		);
+		ScaleAnimation scaleAnimation = new ScaleAnimation(0.0f, 1.0f, 0.0f, 1.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
 		scaleAnimation.setDuration(800);
 		scaleAnimation.setFillAfter(true);
 
-		// Fade in animation for title
 		AlphaAnimation fadeIn = new AlphaAnimation(0.0f, 1.0f);
 		fadeIn.setDuration(1000);
 		fadeIn.setStartOffset(300);
@@ -115,41 +105,27 @@ public class WinnerActivity extends AppCompatActivity {
 
 	private void setupButtons() {
 		btnNext.setOnClickListener(v -> {
-			// Get money and bet data from intent
-			int moneyBefore = getIntent().getIntExtra("moneyBefore", 1000);
-			int moneyAfter = getIntent().getIntExtra("moneyAfter", 1000);
-			int betAmount = getIntent().getIntExtra("betAmount", 0);
-			int betOnId = getIntent().getIntExtra("betOnId", -1);
+            MusicManager.getInstance().restoreMainBgm(this);
 
-			// Navigate to BetResultActivity
 			Intent intent = new Intent(WinnerActivity.this, BetResultActivity.class);
 			intent.putExtra("winnerId", winnerId);
 			intent.putExtra("winnerName", winnerName);
-			intent.putExtra("moneyBefore", moneyBefore);
-			intent.putExtra("moneyAfter", moneyAfter);
-			intent.putExtra("betAmount", betAmount);
-			intent.putExtra("betOnId", betOnId);
+			intent.putExtra("moneyBefore", getIntent().getIntExtra("moneyBefore", 1000));
+			intent.putExtra("moneyAfter", getIntent().getIntExtra("moneyAfter", 1000));
+			intent.putExtra("betAmount", getIntent().getIntExtra("betAmount", 0));
+			intent.putExtra("betOnId", getIntent().getIntExtra("betOnId", -1));
 
 			startActivity(intent);
 			finish();
 		});
-	}
 
-	@Override
-	protected void onPause() {
-		super.onPause();
-		MusicManager.getInstance().pauseBgm();
-	}
+		btnBackToLogin.setOnClickListener(v -> {
+            MusicManager.getInstance().restoreMainBgm(this);
 
-	@Override
-	protected void onResume() {
-		super.onResume();
-		MusicManager.getInstance().resumeBgm();
-	}
-
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		// Don't stop BGM here, it will continue to next screen
+			Intent intent = new Intent(WinnerActivity.this, LoginActivity.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+			startActivity(intent);
+			finish();
+		});
 	}
 }

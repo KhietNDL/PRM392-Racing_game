@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -31,6 +33,7 @@ public class RaceActivity extends AppCompatActivity {
 
     private TextView textMoney;
     private TextView textStatus;
+    private TextView textBetting;
     private EditText editTopUpAmount;
     private Button buttonTopUp;
     private EditText editBetHorse1;
@@ -65,6 +68,7 @@ public class RaceActivity extends AppCompatActivity {
 
         textMoney = findViewById(R.id.textMoney);
         textStatus = findViewById(R.id.textStatus);
+        textBetting = findViewById(R.id.textBetting);
         editTopUpAmount = findViewById(R.id.editTopUpAmount);
         buttonTopUp = findViewById(R.id.buttonTopUp);
         editBetHorse1 = findViewById(R.id.editBetHorse1);
@@ -78,6 +82,10 @@ public class RaceActivity extends AppCompatActivity {
         horse3 = findViewById(R.id.horse3);
         startButton = findViewById(R.id.startButton);
         resetButton = findViewById(R.id.resetButton);
+
+        // Apply blink animation to the betting text
+        Animation blinkAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
+        textBetting.startAnimation(blinkAnimation);
 
         // Check if money is passed from previous race
         int currentMoney = getIntent().getIntExtra("currentMoney", STARTING_MONEY);
@@ -139,6 +147,8 @@ public class RaceActivity extends AppCompatActivity {
         resetButton.setEnabled(false);
         setTopUpEnabled(false);
         textStatus.setText("Race started...");
+        textBetting.clearAnimation();
+        textBetting.setVisibility(View.GONE);
 
         raceRunnable = new Runnable() {
             @Override
@@ -196,20 +206,20 @@ public class RaceActivity extends AppCompatActivity {
         String winnerName;
         int winnerImageRes;
         if (winnerIndex == 0) {
-            winnerName = "Horse 1";
+            winnerName = "Gold Ship";
             winnerImageRes = R.drawable.ic_winhorse1;
         } else if (winnerIndex == 1) {
-            winnerName = "Horse 2";
+            winnerName = "Maruzensky";
             winnerImageRes = R.drawable.ic_winhorse2;
         } else {
-            winnerName = "Horse 3";
+            winnerName = "Oguri Cap";
             winnerImageRes = R.drawable.ic_winhorse3;
         }
 
         // Determine the main bet horse ID for result display
         int mainBetHorseId;
         if (betOnHorseId != -1) {
-            mainBetHorseId = betOnHorseId + 1; // Convert to 1-based (Horse 1 = 1, Horse 2 = 2, etc.)
+            mainBetHorseId = betOnHorseId + 1;
         } else {
             // If bet on multiple, use the winner as main bet for display
             mainBetHorseId = winnerIndex + 1;
@@ -217,7 +227,7 @@ public class RaceActivity extends AppCompatActivity {
 
         // Navigate to WinnerActivity immediately after race ends
         Intent intent = new Intent(RaceActivity.this, WinnerActivity.class);
-        intent.putExtra("winnerId", winnerIndex + 1); // Horse 1 = id 1, Horse 2 = id 2, etc.
+        intent.putExtra("winnerId", winnerIndex + 1);
         intent.putExtra("winnerName", winnerName);
         intent.putExtra("winnerImageRes", winnerImageRes);
         intent.putExtra("moneyBefore", moneyBeforeRace);
@@ -244,6 +254,9 @@ public class RaceActivity extends AppCompatActivity {
         startButton.setEnabled(true);
         resetButton.setEnabled(true);
         setTopUpEnabled(true);
+        textBetting.setVisibility(View.VISIBLE);
+        Animation blinkAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
+        textBetting.startAnimation(blinkAnimation);
     }
 
     private void topUpMoney() {
@@ -263,7 +276,7 @@ public class RaceActivity extends AppCompatActivity {
     }
 
     private void updateMoneyText() {
-        textMoney.setText("Money: " + player.getMoney());
+        textMoney.setText("Money: $" + player.getMoney());
     }
 
     private int parseAmount(EditText editText) {

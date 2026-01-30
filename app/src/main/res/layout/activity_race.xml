@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
+    android:background="@drawable/horse_racing"
     tools:context=".game.RaceActivity">
 
     <TextView
@@ -14,7 +15,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="Money: 0"
+        android:text="Money: $0"
+        android:textColor="@color/win_green"
         android:textSize="18sp"
         android:textStyle="bold" />
 
@@ -25,6 +27,7 @@
         android:layout_marginTop="6dp"
         android:gravity="center"
         android:text=""
+        android:textColor="@android:color/white"
         android:textSize="14sp" />
 
     <LinearLayout
@@ -41,6 +44,8 @@
             android:layout_weight="1"
             android:digits="0123456789"
             android:hint="Top up amount"
+            android:textColor="@android:color/white"
+            android:textColorHint="@android:color/darker_gray"
             android:inputType="number" />
 
         <Button
@@ -56,73 +61,140 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
-        android:text="Betting"
+        android:gravity="center"
+        android:text="Choose your horse!!"
+        android:textColor="@android:color/white"
+        android:textSize="24sp"
         android:textStyle="bold" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
-        android:orientation="horizontal">
+        android:orientation="vertical"
+        android:background="@drawable/card_background"
+        android:padding="10dp"
+        android:layout_marginTop="10dp">
 
-        <TextView
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Horse 1" />
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/editBetHorse1"
-            android:layout_width="0dp"
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/horse1_color"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:shadowColor="#000000"
+                android:shadowDx="2"
+                android:shadowDy="2"
+                android:shadowRadius="2"
+                android:text="Gold Ship" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="$"
+                android:textColor="@color/win_green"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginEnd="4dp"/>
+
+            <EditText
+                android:id="@+id/editBetHorse1"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:digits="0123456789"
+                android:hint="Bet"
+                android:textColor="@color/win_green"
+                android:textColorHint="@android:color/darker_gray"
+                android:inputType="number" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:digits="0123456789"
-            android:hint="Bet"
-            android:inputType="number" />
+            android:layout_marginTop="6dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/horse2_color"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:shadowColor="#000000"
+                android:shadowDx="2"
+                android:shadowDy="2"
+                android:shadowRadius="2"
+                android:text="Maruzensky" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="$"
+                android:textColor="@color/win_green"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginEnd="4dp"/>
+
+            <EditText
+                android:id="@+id/editBetHorse2"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:digits="0123456789"
+                android:hint="Bet"
+                android:textColor="@color/win_green"
+                android:textColorHint="@android:color/darker_gray"
+                android:inputType="number" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/horse3_color"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:shadowColor="#000000"
+                android:shadowDx="2"
+                android:shadowDy="2"
+                android:shadowRadius="2"
+                android:text="Oguri Cap" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="$"
+                android:textColor="@color/win_green"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginEnd="4dp"/>
+
+            <EditText
+                android:id="@+id/editBetHorse3"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:hint="Bet"
+                android:textColor="@color/win_green"
+                android:textColorHint="@android:color/darker_gray"
+                android:inputType="number" />
+        </LinearLayout>
+
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Horse 2" />
-
-        <EditText
-            android:id="@+id/editBetHorse2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:digits="0123456789"
-            android:hint="Bet"
-            android:inputType="number" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Horse 3" />
-
-        <EditText
-            android:id="@+id/editBetHorse3"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="Bet"
-            android:inputType="number" />
-    </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/raceTrackContainer1"
