@@ -197,13 +197,13 @@ public class RaceActivity extends AppCompatActivity {
         int winnerImageRes;
         if (winnerIndex == 0) {
             winnerName = "Horse 1";
-            winnerImageRes = R.drawable.horse_running1;
+            winnerImageRes = R.drawable.ic_winhorse1;
         } else if (winnerIndex == 1) {
             winnerName = "Horse 2";
-            winnerImageRes = R.drawable.horse_running2;
+            winnerImageRes = R.drawable.ic_winhorse2;
         } else {
             winnerName = "Horse 3";
-            winnerImageRes = R.drawable.horse_running3;
+            winnerImageRes = R.drawable.ic_winhorse3;
         }
 
         // Determine the main bet horse ID for result display
