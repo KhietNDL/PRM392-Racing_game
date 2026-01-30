@@ -89,17 +89,9 @@ public class BetResultActivity extends AppCompatActivity {
 	private void displayResult() {
 		int moneyChange = moneyAfter - moneyBefore;
 
-		if (isWin) {
-			// Player won
-			tvResultTitle.setText("Congratulations! You Won!");
-			tvResultTitle.setTextColor(ContextCompat.getColor(this, R.color.win_green));
-			ivResultIcon.setImageResource(R.drawable.ic_win);
-		} else {
-			// Player lost
-			tvResultTitle.setText("Better Luck Next Time!");
-			tvResultTitle.setTextColor(ContextCompat.getColor(this, R.color.lose_red));
-			ivResultIcon.setImageResource(R.drawable.ic_lose);
-		}
+		tvResultTitle.setText("Balance change");
+		tvResultTitle.setTextColor(ContextCompat.getColor(this, R.color.white));
+		ivResultIcon.setImageResource(R.drawable.ic_finish_flag);
 
 		// Display money before (white color)
 		tvMoneyBefore.setText("Previous: $" + moneyBefore);

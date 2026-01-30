@@ -8,14 +8,14 @@
     android:padding="20dp"
     tools:context=".ui.BetResultActivity">
 
-    <!-- Result Icon (Win/Lose) -->
+    <!-- Result Icon (Neutral) -->
     <ImageView
         android:id="@+id/ivResultIcon"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginTop="40dp"
         android:contentDescription="Result Icon"
-        android:src="@drawable/ic_win"
+        android:src="@drawable/ic_finish_flag"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -29,8 +29,8 @@
         android:gravity="center"
         android:paddingStart="10dp"
         android:paddingEnd="10dp"
-        android:text="Congratulations! You Won!"
-        android:textColor="@color/win_green"
+        android:text="Balance change"
+        android:textColor="@color/white"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
