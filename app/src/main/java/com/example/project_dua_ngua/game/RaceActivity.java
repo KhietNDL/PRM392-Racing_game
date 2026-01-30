@@ -33,10 +33,13 @@ public class RaceActivity extends AppCompatActivity {
     private TextView textStatus;
     private EditText editBetHorse1;
     private EditText editBetHorse2;
+    private EditText editBetHorse3;
     private View raceTrack1;
     private View raceTrack2;
+    private View raceTrack3;
     private ImageView horse1;
     private ImageView horse2;
+    private ImageView horse3;
     private Button startButton;
     private Button resetButton;
 
@@ -62,10 +65,13 @@ public class RaceActivity extends AppCompatActivity {
         textStatus = findViewById(R.id.textStatus);
         editBetHorse1 = findViewById(R.id.editBetHorse1);
         editBetHorse2 = findViewById(R.id.editBetHorse2);
+        editBetHorse3 = findViewById(R.id.editBetHorse3);
         raceTrack1 = findViewById(R.id.raceTrack1);
         raceTrack2 = findViewById(R.id.raceTrack2);
+        raceTrack3 = findViewById(R.id.raceTrack3);
         horse1 = findViewById(R.id.horse1);
         horse2 = findViewById(R.id.horse2);
+        horse3 = findViewById(R.id.horse3);
         startButton = findViewById(R.id.startButton);
         resetButton = findViewById(R.id.resetButton);
 
@@ -86,7 +92,8 @@ public class RaceActivity extends AppCompatActivity {
 
         int betHorse1 = parseAmount(editBetHorse1);
         int betHorse2 = parseAmount(editBetHorse2);
-        List<Bet> bets = betManager.buildBets(new int[]{betHorse1, betHorse2});
+        int betHorse3 = parseAmount(editBetHorse3);
+        List<Bet> bets = betManager.buildBets(new int[]{betHorse1, betHorse2, betHorse3});
         int totalBet = betManager.sumBets(bets);
         if (totalBet <= 0) {
             Toast.makeText(this, "Please place at least one bet", Toast.LENGTH_SHORT).show();
@@ -102,12 +109,15 @@ public class RaceActivity extends AppCompatActivity {
         totalBetAmount = totalBet;
 
         // Determine which horse was bet on
-        if (betHorse1 > 0 && betHorse2 == 0) {
-            betOnHorseId = 0; // Bet on Horse 1 only
-        } else if (betHorse2 > 0 && betHorse1 == 0) {
-            betOnHorseId = 1; // Bet on Horse 2 only
+        int betsCount = 0;
+        int singleBetOn = -1;
+        if (betHorse1 > 0) { betsCount++; singleBetOn = 0; }
+        if (betHorse2 > 0) { betsCount++; singleBetOn = 1; }
+        if (betHorse3 > 0) { betsCount++; singleBetOn = 2; }
+        if (betsCount == 1) {
+            betOnHorseId = singleBetOn;
         } else {
-            betOnHorseId = -1; // Bet on both horses
+            betOnHorseId = -1; // Bet on multiple horses
         }
 
         player.placeBets(bets, totalBet);
@@ -132,10 +142,12 @@ public class RaceActivity extends AppCompatActivity {
                 // Move horses
                 horse1.setTranslationX(horse1.getTranslationX() + random.nextInt(20) + 10);
                 horse2.setTranslationX(horse2.getTranslationX() + random.nextInt(20) + 10);
+                horse3.setTranslationX(horse3.getTranslationX() + random.nextInt(20) + 10);
 
                 // Check for winner
                 float finishLine1 = Math.max(0, raceTrack1.getWidth() - horse1.getWidth());
                 float finishLine2 = Math.max(0, raceTrack2.getWidth() - horse2.getWidth());
+                float finishLine3 = Math.max(0, raceTrack3.getWidth() - horse3.getWidth());
                 if (!winnerDeclared && horse1.getTranslationX() >= finishLine1) {
                     winnerDeclared = true;
                     endRace(0);
@@ -144,6 +156,11 @@ public class RaceActivity extends AppCompatActivity {
                 if (!winnerDeclared && horse2.getTranslationX() >= finishLine2) {
                     winnerDeclared = true;
                     endRace(1);
+                    return;
+                }
+                if (!winnerDeclared && horse3.getTranslationX() >= finishLine3) {
+                    winnerDeclared = true;
+                    endRace(2);
                     return;
                 }
 
@@ -166,13 +183,21 @@ public class RaceActivity extends AppCompatActivity {
         int moneyAfterRace = player.getMoney();
 
         // Prepare winner data
-        String winnerName = winnerIndex == 0 ? "Horse 1" : "Horse 2";
+        String winnerName;
+        if (winnerIndex == 0) {
+            winnerName = "Horse 1";
+        } else if (winnerIndex == 1) {
+            winnerName = "Horse 2";
+        } else {
+            winnerName = "Horse 3";
+        }
+
         int winnerImageRes = R.drawable.ic_horse; // Use horse drawable
 
         // Determine the main bet horse ID for result display
         int mainBetHorseId;
         if (betOnHorseId != -1) {
-            mainBetHorseId = betOnHorseId + 1; // Convert to 1-based (Horse 1 = 1, Horse 2 = 2)
+            mainBetHorseId = betOnHorseId + 1; // Convert to 1-based (Horse 1 = 1, Horse 2 = 2, etc.)
         } else {
             // If bet on multiple, use the winner as main bet for display
             mainBetHorseId = winnerIndex + 1;
@@ -180,7 +205,7 @@ public class RaceActivity extends AppCompatActivity {
 
         // Navigate to WinnerActivity immediately after race ends
         Intent intent = new Intent(RaceActivity.this, WinnerActivity.class);
-        intent.putExtra("winnerId", winnerIndex + 1); // Horse 1 = id 1, Horse 2 = id 2
+        intent.putExtra("winnerId", winnerIndex + 1); // Horse 1 = id 1, Horse 2 = id 2, etc.
         intent.putExtra("winnerName", winnerName);
         intent.putExtra("winnerImageRes", winnerImageRes);
         intent.putExtra("moneyBefore", moneyBeforeRace);
@@ -228,15 +253,18 @@ public class RaceActivity extends AppCompatActivity {
     private void clearBetInputs() {
         editBetHorse1.setText("");
         editBetHorse2.setText("");
+        editBetHorse3.setText("");
     }
 
     private void setBetInputsEnabled(boolean enabled) {
         editBetHorse1.setEnabled(enabled);
         editBetHorse2.setEnabled(enabled);
+        editBetHorse3.setEnabled(enabled);
     }
 
     private void resetHorsePositions() {
         horse1.setTranslationX(0f);
         horse2.setTranslationX(0f);
+        horse3.setTranslationX(0f);
     }
 }

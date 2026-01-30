@@ -77,47 +77,131 @@
             android:inputType="number" />
     </LinearLayout>
 
-    <FrameLayout
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Horse 3" />
+
+        <EditText
+            android:id="@+id/editBetHorse3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Bet"
+            android:inputType="number" />
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/raceTrackContainer1"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="60dp"
         android:layout_marginTop="16dp">
 
         <View
             android:id="@+id/raceTrack1"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="10dp"
-            android:layout_gravity="center_vertical"
-            android:background="@android:color/darker_gray" />
+            android:background="@android:color/darker_gray"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
+        <pl.droidsonroids.gif.GifImageView
             android:id="@+id/horse1"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/ic_horse" />
+            android:src="@drawable/horse_running1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    </FrameLayout>
+        <ImageView
+            android:id="@+id/imgFinish1"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_finish_flag"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <FrameLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/raceTrackContainer2"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="60dp"
         android:layout_marginTop="8dp">
 
         <View
             android:id="@+id/raceTrack2"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="10dp"
-            android:layout_gravity="center_vertical"
-            android:background="@android:color/darker_gray" />
+            android:background="@android:color/darker_gray"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
+        <pl.droidsonroids.gif.GifImageView
             android:id="@+id/horse2"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/ic_horse" />
+            android:src="@drawable/horse_running2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    </FrameLayout>
+        <ImageView
+            android:id="@+id/imgFinish2"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_finish_flag"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/raceTrackContainer3"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="8dp">
+
+        <View
+            android:id="@+id/raceTrack3"
+            android:layout_width="0dp"
+            android:layout_height="10dp"
+            android:background="@android:color/darker_gray"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <pl.droidsonroids.gif.GifImageView
+            android:id="@+id/horse3"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/horse_running3"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imgFinish3"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_finish_flag"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
