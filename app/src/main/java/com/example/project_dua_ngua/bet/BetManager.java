@@ -23,7 +23,7 @@ public class BetManager {
         return total;
     }
 
-    public BetResult resolveBets(Player player, int winnerIndex, int payoutMultiplier) {
+    public BetResult resolveBets(Player player, int winnerIndex, double payoutMultiplier) {
         List<Bet> bets = player.getBets();
         int totalBet = sumBets(bets);
         int winningAmount = 0;
@@ -32,7 +32,7 @@ public class BetManager {
                 winningAmount += bet.getAmount();
             }
         }
-        int payout = winningAmount * payoutMultiplier;
+        int payout = (int) Math.round(winningAmount * payoutMultiplier);
         player.addMoney(payout);
         player.recordRace(winningAmount > 0);
         player.clearBets();
